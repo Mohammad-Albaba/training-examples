@@ -25,13 +25,14 @@ public class MainTest {
     }
 
 
-    @DataProvider (name = "data-provider")
+    @DataProvider (name = "Fatima")
     public Object[][] dpMethod(){
-        return new Object[][] {{7,"+", 2, 9},{8,"-", 3, 5}};
+       return new Object[][] {{7,"+", 2, 9},{8,"-", 3, 5},{8,"+", 2, 10},{5,"-", 3, 2}};
     }
 
 
-    @Test (dataProvider = "data-provider")
+
+    @Test (dataProvider = "Fatima")
     public void testProvider(int number1,String operation, int number2, int expectedResult){
 
        //Click the first number
