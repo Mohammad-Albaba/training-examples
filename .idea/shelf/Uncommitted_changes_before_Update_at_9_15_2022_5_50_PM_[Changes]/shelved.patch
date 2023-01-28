@@ -1,0 +1,26 @@
+Index: src/test/java/MainTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import io.github.bonigarcia.wdm.WebDriverManager;\r\nimport org.openqa.selenium.By;\r\nimport org.openqa.selenium.WebElement;\r\nimport org.openqa.selenium.chrome.ChromeDriver;\r\nimport org.openqa.selenium.support.ui.ExpectedConditions;\r\nimport org.openqa.selenium.support.ui.WebDriverWait;\r\nimport org.testng.annotations.*;\r\n\r\nimport java.net.MalformedURLException;\r\nimport java.util.List;\r\nimport java.util.concurrent.TimeUnit;\r\n\r\nimport static org.testng.Assert.assertEquals;\r\nimport static org.testng.Assert.assertTrue;\r\n\r\npublic class MainTest {\r\n    static ChromeDriver driver;\r\n\r\n   @BeforeClass\r\n    public static void setUp() {\r\n        WebDriverManager.chromedriver().setup();\r\n        driver = new ChromeDriver();\r\n        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);\r\n        driver.get(\"https://www.calculator.net/\");\r\n    }\r\n\r\n\r\n    @DataProvider (name = \"Fatima\")\r\n    public Object[][] dpMethod(){\r\n       return new Object[][] {{7,\"+\", 2, 9},{8,\"-\", 3, 5},{8,\"+\", 2, 10},{5,\"-\", 3, 2}};\r\n    }\r\n\r\n\r\n\r\n    @Test (dataProvider = \"Fatima\")\r\n    public void testProvider(int number1,String operation, int number2, int expectedResult){\r\n\r\n       //Click the first number\r\n       String number1Xpath = \"//span[@onclick='r(\"+number1+\")']\";\r\n        WebElement firstNumberButton= driver.findElement(By.xpath(number1Xpath));\r\n        assertTrue(firstNumberButton.isDisplayed());\r\n        firstNumberButton.click();\r\n\r\n        // Click the operation\r\n        String operationXpath=\"//span[@onclick=\\\"r('\".concat(operation).concat(\"')\\\"]\");\r\n        WebElement operationButton= driver.findElement(By.xpath(operationXpath));\r\n        assertTrue(operationButton.isDisplayed());\r\n        operationButton.click();\r\n\r\n        //Click the second number\r\n        String number2Xpath = \"//span[@onclick='r(\"+number2+\")']\";\r\n        WebElement secondNumberButton= driver.findElement(By.xpath(number2Xpath));\r\n        assertTrue(secondNumberButton.isDisplayed());\r\n        secondNumberButton.click();\r\n\r\n        //Click =\r\n        String equalsXpath=\"//span[@onclick=\\\"r('\".concat(\"=\").concat(\"')\\\"]\");\r\n        WebElement equalsButton= driver.findElement(By.xpath(equalsXpath));\r\n        assertTrue(equalsButton.isDisplayed());\r\n        equalsButton.click();\r\n\r\n        //Verify the output\r\n        WebElement answerFiled= driver.findElement(By.id(\"sciOutPut\"));\r\n        assertTrue(answerFiled.isDisplayed());\r\n        System.out.println(\"getText: \"+answerFiled.getText().trim());\r\n        System.out.println(\"innerText: \"+answerFiled.getAttribute(\"innerText\").trim());\r\n        System.out.println(\"textContent: \"+answerFiled.getAttribute(\"textContent\").trim());\r\n        assertEquals(answerFiled.getText().trim(), \"\"+expectedResult);\r\n\r\n\r\n    }\r\n\r\n   @AfterClass\r\n    void tearDown(){\r\n        driver.quit();\r\n\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/test/java/MainTest.java b/src/test/java/MainTest.java
+--- a/src/test/java/MainTest.java	
++++ b/src/test/java/MainTest.java	
+@@ -25,14 +25,13 @@
+     }
+ 
+ 
+-    @DataProvider (name = "Fatima")
++    @DataProvider (name = "data-provider")
+     public Object[][] dpMethod(){
+-       return new Object[][] {{7,"+", 2, 9},{8,"-", 3, 5},{8,"+", 2, 10},{5,"-", 3, 2}};
++        return new Object[][] {{7,"+", 2, 9},{8,"-", 3, 5}};
+     }
+ 
+ 
+-
+-    @Test (dataProvider = "Fatima")
++    @Test (dataProvider = "data-provider")
+     public void testProvider(int number1,String operation, int number2, int expectedResult){
+ 
+        //Click the first number
